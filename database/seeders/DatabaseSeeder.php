@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Constant;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -17,6 +18,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('password'),
+            'role' => Constant::ROLE_ADMIN,
         ]);
     }
 }
