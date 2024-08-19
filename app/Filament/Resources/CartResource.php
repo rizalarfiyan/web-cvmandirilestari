@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Number;
+use Illuminate\Support\Str;
 use LaraZeus\Quantity\Components\Quantity;
 
 class CartResource extends Resource
@@ -21,8 +22,6 @@ class CartResource extends Resource
     protected static ?string $model = Cart::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
-
-    protected static ?string $navigationGroup = 'System Management';
 
     protected static ?int $navigationSort = 3;
 
@@ -181,7 +180,18 @@ class CartResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('Cart ID')
+                    ->sortable()
+                    ->formatStateUsing(function(Tables\Columns\TextColumn $column, $state) {
+                        if (blank($state)) {
+                            return null;
+                        }
+
+                        return "CT".Str::of($state)->padLeft(5, '0');
+                    }),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Customer')
                     ->searchable()

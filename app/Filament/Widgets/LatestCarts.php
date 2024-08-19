@@ -1,33 +1,27 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\RelationManagers;
+namespace App\Filament\Widgets;
 
 use App\Constant;
 use App\Filament\Resources\CartResource;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
+use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Support\Str;
 
-class CartsRelationManager extends RelationManager
+class LatestCarts extends BaseWidget
 {
-    protected static string $relationship = 'carts';
+    protected string|int|array $columnSpan = 'full';
 
-    public function isReadOnly(): bool
-    {
-        return false;
-    }
-
-    public static function canViewForRecord(Model $currentRecord, string $pageClass): bool
-    {
-        return $currentRecord->role != Constant::ROLE_ADMIN;
-    }
+    protected static ?int $sort = 2;
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('id')
+            ->query(
+                CartResource::getEloquentQuery()
+            )
+            ->defaultPaginationPageOption(5)
             ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('id')
@@ -89,26 +83,6 @@ class CartsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Order Date')
                     ->dateTime(),
-            ])
-            ->filters([
-                Tables\Filters\SelectFilter::make('payment_method')
-                    ->options([
-                        Constant::CART_PAYMENT_METHOD_CASH => 'Cash',
-                        Constant::CART_PAYMENT_METHOD_TRANSFER => 'Transfer',
-                    ]),
-                Tables\Filters\SelectFilter::make('payment_state')
-                    ->options([
-                        Constant::CART_PAYMENT_STATUS_PENDING => 'Pending',
-                        Constant::CART_PAYMENT_STATUS_SUCCESS => 'Success',
-                        Constant::CART_PAYMENT_STATUS_FAILED => 'Failed',
-                    ]),
-                Tables\Filters\SelectFilter::make('state')
-                    ->options([
-                        Constant::CART_STATUS_NEW => 'New',
-                        Constant::CART_STATUS_PROCESSING => 'Processing',
-                        Constant::CART_STATUS_COMPLETED => 'Completed',
-                        Constant::CART_STATUS_CANCELED => 'Canceled',
-                    ]),
             ])
             ->actions([
                 Tables\Actions\Action::make('View')
