@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,10 +19,11 @@ class Category extends Model
     protected $fillable = [
         'name',
         'slug',
+        'description',
     ];
 
     public function products()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class, 'product_category');
     }
 }
