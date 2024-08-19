@@ -251,13 +251,6 @@ class CartResource extends Resource
                         Constant::CART_PAYMENT_STATUS_SUCCESS => 'Success',
                         Constant::CART_PAYMENT_STATUS_FAILED => 'Failed',
                     ]),
-                Tables\Filters\SelectFilter::make('state')
-                    ->options([
-                        Constant::CART_STATUS_NEW => 'New',
-                        Constant::CART_STATUS_PROCESSING => 'Processing',
-                        Constant::CART_STATUS_COMPLETED => 'Completed',
-                        Constant::CART_STATUS_CANCELED => 'Canceled',
-                    ]),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
