@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Constant;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Category;
@@ -90,7 +91,7 @@ class ProductResource extends Resource
                             ->numeric()
                             ->default(0)
                             ->minValue(0)
-                            ->maxValue(99999),
+                            ->maxValue(Constant::MAX_PRODUCT),
                         Forms\Components\TextInput::make('price')
                             ->required()
                             ->numeric()
