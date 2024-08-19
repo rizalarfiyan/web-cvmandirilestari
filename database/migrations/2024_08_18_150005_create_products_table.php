@@ -18,7 +18,10 @@ return new class extends Migration
             $table->text('description');
             $table->string('images')->nullable();
             $table->integer('stock')->default(0);
-            $table->decimal('price', 10, 2)->default(0);
+            $table->decimal('price', 10)->default(0);
+            $table->boolean('in_stock')->default(true);
+            $table->boolean('is_featured')->default(false);
+            $table->boolean('on_sale')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

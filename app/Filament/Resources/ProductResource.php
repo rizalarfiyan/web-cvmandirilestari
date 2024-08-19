@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -31,72 +32,95 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(64)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(function (Set $set, $state) {
-                        $set('slug', strtolower(Str::slug($state)));
-                    })
-                    ->columnSpan(2),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(64)
-                    ->unique(ignoreRecord: true)
-                    ->columnSpan(2),
-                Quantity::make('stock')
-                    ->required()
-                    ->numeric()
-                    ->default(0)
-                    ->minValue(0)
-                    ->maxValue(99999),
-                Forms\Components\TextInput::make('price')
-                    ->required()
-                    ->numeric()
-                    ->default(0.00)
-                    ->prefix('Rp.'),
-                Forms\Components\Select::make('category')
-                    ->required()
-                    ->searchable()
-                    ->debounce()
-                    ->multiple()
-                    ->relationship('categories', 'name')
-                    ->minItems(1)
-                    ->maxItems(6)
-                    ->columnSpan(2),
-                Forms\Components\RichEditor::make('description')
-                    ->toolbarButtons([
-                        'bold',
-                        'bulletList',
-                        'italic',
-                        'link',
-                        'orderedList',
-                        'redo',
-                        'strike',
-                        'underline',
-                        'undo',
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\Section::make('Information')->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(64)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(function (Set $set, $state) {
+                                $set('slug', strtolower(Str::slug($state)));
+                            }),
+                        Forms\Components\TextInput::make('slug')
+                            ->required()
+                            ->maxLength(64)
+                            ->unique(ignoreRecord: true),
+                        Forms\Components\RichEditor::make('description')
+                            ->toolbarButtons([
+                                'bold',
+                                'bulletList',
+                                'italic',
+                                'link',
+                                'orderedList',
+                                'redo',
+                                'strike',
+                                'underline',
+                                'undo',
+                            ])
+                            ->required()
+                            ->minLength(40)
+                            ->columnSpanFull(),
+                    ])->columns(),
+                    Forms\Components\Section::make('Images')
+                        ->schema([
+                            Forms\Components\FileUpload::make('images')
+                                ->image()
+                                ->label('')
+                                ->imageEditor()
+                                ->imageEditorAspectRatios([
+                                    '4:3',
+                                ])
+                                ->directory('products')
+                                ->imageResizeMode('cover')
+                                ->imageCropAspectRatio('4:3')
+                                ->multiple()
+                                ->reorderable()
+                                ->panelLayout('grid')
+                                ->columnSpanFull()
+                                ->minSize(32)
+                                ->maxSize(1024 * 3)
+                                ->minFiles(1)
+                                ->maxFiles(5),
+                        ])->columnSpanFull(),
+                ])->columnSpan(2),
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\Section::make()->schema([
+                        Quantity::make('stock')
+                            ->required()
+                            ->numeric()
+                            ->default(0)
+                            ->minValue(0)
+                            ->maxValue(99999),
+                        Forms\Components\TextInput::make('price')
+                            ->required()
+                            ->numeric()
+                            ->default(0.00)
+                            ->prefix('Rp.'),
+                    ]),
+                    Forms\Components\Section::make('Category')->schema([
+                        Forms\Components\Select::make('category')
+                            ->label('')
+                            ->required()
+                            ->searchable()
+                            ->debounce()
+                            ->multiple()
+                            ->minItems(1)
+                            ->maxItems(6)
+                            ->columnSpan(2)
+                            ->preload()
+                            ->relationship('categories', 'name'),
+                    ]),
+                    Forms\Components\Section::make('Status')->schema([
+                        Forms\Components\Toggle::make('in_stock')
+                            ->required()
+                            ->default(true),
+                        Forms\Components\Toggle::make('is_featured')
+                            ->required(),
+                        Forms\Components\Toggle::make('on_sale')
+                            ->required(),
                     ])
-                    ->required()
-                    ->columnSpanFull()
-                    ->minLength(40),
-                Forms\Components\FileUpload::make('images')
-                    ->image()
-                    ->imageEditor()
-                    ->imageEditorAspectRatios([
-                        '4:3',
-                    ])
-                    ->directory('products')
-                    ->imageResizeMode('cover')
-                    ->imageCropAspectRatio('4:3')
-                    ->multiple()
-                    ->reorderable()
-                    ->panelLayout('grid')
-                    ->columnSpanFull()
-                    ->minSize(32)
-                    ->maxSize(1024 * 3)
-                    ->minFiles(1)
-                    ->maxFiles(5),
-            ])->columns(4);
+                ])->columnSpan(1),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -104,15 +128,20 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('stock')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->money('Rp. ', 0, 'id')
+                    ->money('IDR', 0, 'id')
                     ->sortable(),
+                Tables\Columns\IconColumn::make('in_stock')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('is_featured')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('on_sale')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -127,20 +156,24 @@ class ProductResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('category')
+                    ->relationship('categories', 'name')
+                    ->searchable()
+                    ->preload(),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\Action::make('Watch')
-                    ->icon('heroicon-o-globe-alt')
-                    ->iconButton()
-                    ->tooltip('Preview Product')
-                    ->color(Color::Blue)
-                    ->url(fn(Product $product) => "/product/{$product['slug']}")
-                    ->openUrlInNewTab(),
-                Tables\Actions\ViewAction::make()->iconButton()->tooltip('View Product'),
-                Tables\Actions\EditAction::make()->iconButton()->tooltip('Edit Product'),
-                Tables\Actions\DeleteAction::make()->iconButton()->tooltip('Delete Product'),
-                Tables\Actions\RestoreAction::make()->iconButton()->tooltip('Restore Product'),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\Action::make('Preview')
+                        ->icon('heroicon-o-globe-alt')
+                        ->color(Color::Blue)
+                        ->url(fn(Product $product) => "/product/{$product['slug']}")
+                        ->openUrlInNewTab(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

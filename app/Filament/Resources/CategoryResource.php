@@ -85,17 +85,17 @@ class CategoryResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\Action::make('Watch')
-                    ->icon('heroicon-o-globe-alt')
-                    ->iconButton()
-                    ->tooltip('Preview Category')
-                    ->color(Color::Blue)
-                    ->url(fn(Category $category) => "/category/{$category['slug']}")
-                    ->openUrlInNewTab(),
-                Tables\Actions\ViewAction::make()->iconButton()->tooltip('View Category'),
-                Tables\Actions\EditAction::make()->iconButton()->tooltip('Edit Category'),
-                Tables\Actions\DeleteAction::make()->iconButton()->tooltip('Delete Category'),
-                Tables\Actions\RestoreAction::make()->iconButton()->tooltip('Restore Category'),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\Action::make('Preview')
+                        ->icon('heroicon-o-globe-alt')
+                        ->color(Color::Blue)
+                        ->url(fn(Category $category) => "/category/{$category['slug']}")
+                        ->openUrlInNewTab(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
