@@ -1,8 +1,8 @@
-<div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
+<main class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
   <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
     <div class="mx-auto max-w-lg space-y-2 text-center mb-16">
       <h2 class="font-semibold text-4xl tracking-tight text-slate-900 dark:text-slate-50">
-        Categories
+        Kategori
       </h2>
       <p class="leading-tight text-slate-600">
         Anda bisa memilih kategori yang sesuai dengan kebutuhan. Kategori ini akan membantu Anda menemukan produk yang Anda cari.
@@ -25,4 +25,4 @@
       @endforeach
     </div>
   </div>
-</div>
+</main>

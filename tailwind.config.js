@@ -23,6 +23,9 @@ export default {
           "950": "#422006"
         }
       },
+      container: {
+        center: true,
+      },
       boxShadow: {
         'smooth': 'rgba(149, 157, 165, 0.08) 0px 8px 24px',
       }
@@ -30,5 +33,6 @@ export default {
   },
   plugins: [
       require('preline/plugin'),
+      require('@tailwindcss/typography'),
   ],
 }
