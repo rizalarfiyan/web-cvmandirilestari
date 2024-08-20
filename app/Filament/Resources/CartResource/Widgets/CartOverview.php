@@ -15,10 +15,10 @@ class CartOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('New Cart', Cart::query()->where('state', Constant::CART_STATUS_NEW)->count()),
-            Stat::make('Cart Processing', Cart::query()->where('state', Constant::CART_STATUS_PROCESSING)->count()),
-            Stat::make('Cart Canceled', Cart::query()->where('state', Constant::CART_STATUS_CANCELED)->count()),
-            Stat::make('Average Price', Number::currency(Cart::query()->avg('total_price'), 'IDR', 'id')),
+            Stat::make('New Cart', Cart::query()->where('state', Constant::CART_STATUS_NEW)->count() ?? 0),
+            Stat::make('Cart Processing', Cart::query()->where('state', Constant::CART_STATUS_PROCESSING)->count() ?? 0),
+            Stat::make('Cart Canceled', Cart::query()->where('state', Constant::CART_STATUS_CANCELED)->count() ?? 0),
+            Stat::make('Average Price', Number::currency(Cart::query()->avg('total_price') ?? 0, 'IDR', 'id')),
         ];
     }
 }

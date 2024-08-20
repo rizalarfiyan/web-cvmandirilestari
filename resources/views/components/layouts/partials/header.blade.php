@@ -1,7 +1,7 @@
 <header class="flex z-50 sticky top-0 flex-wrap md:justify-start md:flex-nowrap w-full bg-white text-sm py-3 md:py-0 dark:bg-slate-800 shadow-smooth">
   <nav class="max-w-[85rem] w-full mx-auto px-4 md:px-6 lg:px-8" aria-label="Global">
     <div class="relative md:flex md:items-center md:justify-between">
-      <div class="flex items-center justify-between w-full max-w-40">
+      <div class="flex items-center justify-between w-full max-w-full md:max-w-40">
         <a wire:navigate class="flex items-center gap-2 text-xl leading-tight font-semibold dark:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600" href="/" aria-label="{{ config('app.name') }}">
           <img src="{{ asset('assets/logo_sm.png') }}" alt="{{ config('app.name') }} Logo" class="text-base flex-shrink-0 size-12">
           <div>{{ config('app.name') }}</div>

@@ -170,7 +170,7 @@ class ProductResource extends Resource
                     Tables\Actions\Action::make('Preview')
                         ->icon('heroicon-o-globe-alt')
                         ->color(Color::Blue)
-                        ->url(fn(Product $product) => "/product/{$product['slug']}")
+                        ->url(fn(Product $product) => "/products/{$product['slug']}")
                         ->openUrlInNewTab(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),

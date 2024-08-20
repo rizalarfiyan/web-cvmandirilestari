@@ -31,32 +31,53 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(32)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(function (Set $set, $state) {
-                        $set('slug', strtolower(Str::slug($state)));
-                    }),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(32)
-                    ->unique(ignoreRecord: true),
-                Forms\Components\RichEditor::make('description')
-                    ->toolbarButtons([
-                        'bold',
-                        'bulletList',
-                        'italic',
-                        'link',
-                        'orderedList',
-                        'redo',
-                        'strike',
-                        'underline',
-                        'undo',
-                    ])
-                    ->required()
-                    ->columnSpanFull()
-                    ->minLength(40),
+                Forms\Components\Section::make('Information')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(32)
+                            ->live(onBlur: true)
+                            ->columnSpan(2)
+                            ->afterStateUpdated(function (Set $set, $state) {
+                                $set('slug', strtolower(Str::slug($state)));
+                            }),
+                        Forms\Components\TextInput::make('slug')
+                            ->required()
+                            ->maxLength(32)
+                            ->unique(ignoreRecord: true)
+                            ->columnSpan(2),
+                        Forms\Components\RichEditor::make('description')
+                            ->toolbarButtons([
+                                'bold',
+                                'bulletList',
+                                'italic',
+                                'link',
+                                'orderedList',
+                                'redo',
+                                'strike',
+                                'underline',
+                                'undo',
+                            ])
+                            ->required()
+                            ->columnSpanFull()
+                            ->minLength(40),
+                    ])->columns(4),
+                Forms\Components\Section::make('Image')
+                    ->schema([
+                        Forms\Components\FileUpload::make('image')
+                            ->image()
+                            ->label('')
+                            ->imageEditor()
+                            ->imageEditorAspectRatios([
+                                '1:1',
+                            ])
+                            ->directory('categories')
+                            ->imageResizeMode('cover')
+                            ->imageCropAspectRatio('1:1')
+                            ->panelLayout('grid')
+                            ->minSize(32)
+                            ->maxSize(1024 * 3),
+                    ])->columnSpanFull(),
             ]);
     }
 
@@ -91,7 +112,7 @@ class CategoryResource extends Resource
                     Tables\Actions\Action::make('Preview')
                         ->icon('heroicon-o-globe-alt')
                         ->color(Color::Blue)
-                        ->url(fn(Category $category) => "/category/{$category['slug']}")
+                        ->url(fn(Category $category) => "/categories/{$category['slug']}")
                         ->openUrlInNewTab(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
@@ -118,7 +139,9 @@ class CategoryResource extends Resource
     {
         return [
             'index' => Pages\ListCategories::route('/'),
+            'create' => Pages\CreateCategory::route('/create'),
             'view' => Pages\ViewCategory::route('/{record}'),
+            'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
     }
 
