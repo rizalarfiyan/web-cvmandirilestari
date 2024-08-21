@@ -7,10 +7,15 @@ use App\Models\Product;
 use App\Service\CartService;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Title("Products")]
 class ProductPage extends Component
 {
+    use WithPagination;
+
+    const ITEM_PER_PAGE = 8;
+
     public function addToCart($productId)
     {
         $totalCount = CartService::addItemToCart($productId);
@@ -19,7 +24,7 @@ class ProductPage extends Component
 
     public function render()
     {
-        $products = Product::all();
+        $products = Product::cursorPaginate(self::ITEM_PER_PAGE, ['id', 'name', 'slug', 'images', 'price']);
         return view('livewire.product-page', [
             'products' => $products,
         ]);
