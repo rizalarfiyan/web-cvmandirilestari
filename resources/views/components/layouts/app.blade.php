@@ -8,9 +8,9 @@
   @livewireStyles
 </head>
 <body class="bg-slate-100 dark:bg-slate-700 font-sans antialiased scroll-smooth">
-@include('components.layouts.partials.header')
+@livewire('partials.header')
 {{ $slot }}
+@livewire('partials.footer')
 @livewireScripts
-@include('components.layouts.partials.footer')
 </body>
 </html>

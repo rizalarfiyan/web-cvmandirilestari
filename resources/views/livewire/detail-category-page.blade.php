@@ -1,4 +1,4 @@
-<main class="bg-white">
+<main class="bg-white min-h-[calc(100dvh_-_228px)] w-full">
   <section class="relative flex h-full w-full items-center justify-center bg-slate-100 text-center pt-20 pb-60">
     <div aria-hidden="true" class="-space-x-52 absolute inset-0 grid grid-cols-2 opacity-40 dark:opacity-20">
       <div class="h-56 bg-gradient-to-br from-primary-500 to-primary-100 blur-[106px] dark:from-slate-100"></div>
