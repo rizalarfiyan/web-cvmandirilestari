@@ -36,15 +36,7 @@
   </section>
   <section class="container">
     <div class="max-w-[85rem] px-4 pt-10 sm:px-6 lg:px-8 pb-28 mx-auto">
-      <div class="mx-auto max-w-lg space-y-2 text-center mb-16">
-        <h2 class="font-semibold text-4xl tracking-tight text-slate-900 dark:text-slate-50">
-          Product
-        </h2>
-        <p class="leading-tight text-slate-600">
-          Anda dapat memilih produk yang sesuai dengan kategori ini.
-        </p>
-      </div>
-
+      <x-heading-title title="Produk" description="Anda dapat memilih produk yang sesuai dengan kategori ini."/>
       @if(!empty($products) && count($products) > 0)
         <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
           <div class="mb-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -79,14 +71,17 @@
               </div>
             @endforeach
           </div>
-          <div class="max-w-48 mx-auto">
-            {{ $products->links(data: ['scrollTo' => '#products']) }}
-          </div>
+          @if($products->hasPages())
+            <div class="w-full text-center">
+              <a wire:navigate href="/products?category[0]={{ $category->id }}" class="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-900 hover:bg-slate-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-white dark:focus:ring-slate-700">
+                Lebih lanjut
+              </a>
+            </div>
+          @endif
         </div>
       @else
         <x-empty-state message="Belum ada produk yang tersedia."/>
       @endif
-
     </div>
   </section>
 </main>

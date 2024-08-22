@@ -18,7 +18,7 @@ class DetailCategoryPage extends Component
     public function render()
     {
         $category = Category::where('slug', $this->slug)->firstOrFail();
-        $products = $category->products()->cursorPaginate(Constant::LIMIT_PAGINATION_PRODUCT, ['products.id', 'products.name', 'products.slug', 'products.images', 'products.price']);
+        $products = $category->products()->paginate(Constant::LIMIT_PAGINATION_PRODUCT, ['products.id', 'products.name', 'products.slug', 'products.images', 'products.price']);
         return view('livewire.detail-category-page', [
             'category' => $category,
             'products' => $products,

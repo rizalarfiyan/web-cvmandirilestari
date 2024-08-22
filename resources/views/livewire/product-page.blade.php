@@ -1,7 +1,7 @@
 <main class="w-full min-h-[calc(100dvh_-_228px)]">
   <section class="max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
     <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
-      <x-heading-title title="Products" description="Anda dapat melihat seluruh produk yang tersedia. Gunakan filter untuk memaksimalkan pencarian anda."/>
+      <x-heading-title title="Produk" description="Anda dapat melihat seluruh produk yang tersedia. Gunakan filter untuk memaksimalkan pencarian anda."/>
 
       <div class="mb-4 items-center justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
         <div class="flex items-center justify-center gap-2">
