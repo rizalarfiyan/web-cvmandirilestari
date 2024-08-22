@@ -15,11 +15,20 @@ class DetailProductPage extends Component
 
     public Product $product;
 
+    public $relatedProducts;
+
     public int $quantity = 0;
 
     public function mount($slug)
     {
         $this->product = Product::where('slug', $slug)->firstOrFail();
+        $productCategories = $this->product->categories->select('id')->pluck('id');
+        $this->relatedProducts = Product::select(['products.id', 'products.name', 'products.slug', 'products.images', 'products.price'])
+            ->whereHas('categories', fn($query) => $query->whereIn('categories.id', $productCategories))
+            ->where('id', '!=', $this->product->id)
+            ->inRandomOrder()
+            ->limit(4)
+            ->get();
         $this->quantity = CartService::getQuantity($this->product->id);
     }
 
@@ -29,7 +38,7 @@ class DetailProductPage extends Component
         $this->dispatch('updateCartCount', totalCount: count($cartItems))->to(Header::class);
     }
 
-    public function addToCart()
+    public function currentAddToCart()
     {
         $this->quantity = 1;
         $totalCount = CartService::addItemToCart($this->product->id);

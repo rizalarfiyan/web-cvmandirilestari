@@ -1,5 +1,5 @@
-<main class="bg-white min-h-[calc(100dvh_-_228px)] w-full">
-  <section class="py-8 bg-white md:py-16 dark:bg-slate-900 antialiased">
+<main class="min-h-[calc(100dvh_-_228px)] w-full">
+  <section class="py-8 md:py-16">
     <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
       <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
         <div class="shrink-0">
@@ -81,16 +81,16 @@
             @else
               <button
                 type="button"
-                wire:click.prevent="addToCart"
+                wire:click.prevent="currentAddToCart"
                 class="text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 transition-colors duration-300"
               >
-                <div wire:loading wire:target="addToCart" class="flex items-center justify-center gap-3">
+                <div wire:loading wire:target="currentAddToCart" class="flex items-center justify-center gap-3">
                   <span class="animate-spin inline-block size-4 border-2 border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading">
                     <span class="sr-only">Loading...</span>
                   </span>
                   <span>Loading...</span>
                 </div>
-                <div wire:loading.remove wire:target="addToCart" class="flex items-center justify-center">
+                <div wire:loading.remove wire:target="currentAddToCart" class="flex items-center justify-center">
                   <svg
                     class="w-5 h-5 -ms-2 me-2"
                     aria-hidden="true"
@@ -100,15 +100,15 @@
                     fill="none"
                     viewBox="0 0 24 24"
                   >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
-                  />
-                </svg>
-                Add to cart
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
+                    />
+                  </svg>
+                  Add to cart
                 </div>
               </button>
             @endif
@@ -121,4 +121,19 @@
       </div>
     </div>
   </section>
+
+    @if(!empty($relatedProducts) && count($relatedProducts) > 0)
+    <section class="container">
+      <div class="max-w-[85rem] px-4 pt-10 sm:px-6 lg:px-8 pb-28 mx-auto">
+        <x-heading-title title="Rekomendasi Produk" description="Mungkin anda tertarik dengan produk ini."/>
+          <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+            <div class="mb-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              @foreach($relatedProducts as $product)
+                <x-card-product wire:key="{{ $product->id }}" :product="$product"/>
+              @endforeach
+            </div>
+          </div>
+      </div>
+    </section>
+  @endif
 </main>
