@@ -4,25 +4,26 @@ namespace App\Livewire;
 
 use App\Constant;
 use App\Models\Category;
+use App\Traits\WithAddToCart;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title("Detail Kategori")]
 class DetailCategoryPage extends Component
 {
-    protected string $slug;
+    use WithAddToCart;
+
+    public Category $category;
 
     public function mount($slug)
     {
-        $this->slug = $slug;
+        $this->category = Category::where('slug', $slug)->firstOrFail();
     }
 
     public function render()
     {
-        $category = Category::where('slug', $this->slug)->firstOrFail();
-        $products = $category->products()->paginate(Constant::LIMIT_PAGINATION_PRODUCT, ['products.id', 'products.name', 'products.slug', 'products.images', 'products.price']);
+        $products = $this->category->products()->paginate(Constant::LIMIT_PAGINATION_PRODUCT, ['products.id', 'products.name', 'products.slug', 'products.images', 'products.price']);
         return view('livewire.detail-category-page', [
-            'category' => $category,
             'products' => $products,
         ]);
     }

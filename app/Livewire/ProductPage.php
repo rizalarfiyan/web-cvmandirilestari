@@ -3,20 +3,19 @@
 namespace App\Livewire;
 
 use App\Constant;
-use App\Livewire\Partials\Header;
 use App\Models\Category;
 use App\Models\Product;
-use App\Service\CartService;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\WithAddToCart;
 
 #[Title("Produk")]
 class ProductPage extends Component
 {
-    use WithPagination;
+    use WithPagination, WithAddToCart;
 
     #[Url]
     public $category = [];
@@ -29,12 +28,6 @@ class ProductPage extends Component
 
     #[Url]
     public $sortOrder = "latest-asc";
-
-    public function addToCart($productId)
-    {
-        $totalCount = CartService::addItemToCart($productId);
-        $this->dispatch('updateCartCount', totalCount: $totalCount)->to(Header::class);
-    }
 
     public function render()
     {
@@ -116,7 +109,7 @@ class ProductPage extends Component
         ];
 
         return view('livewire.product-page', [
-            'products' => $products->cursorPaginate(Constant::LIMIT_PAGINATION_PRODUCT, ['id', 'name', 'slug', 'images', 'price']),
+            'products' => $products->cursorPaginate(Constant::LIMIT_PAGINATION_PRODUCT, ['id', 'name', 'slug', 'images', 'price', 'is_featured', 'on_sale']),
             'groupCategories' => $groupCategories,
             'statusFilters' => $statusFilters,
             'sortOrders' => $sortOrders,

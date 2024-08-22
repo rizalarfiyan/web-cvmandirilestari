@@ -1,5 +1,4 @@
 <main class="w-full min-h-[calc(100dvh_-_228px)]">
-
   <section class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
     <div class="container mx-auto px-4">
       <h1 class="text-2xl font-semibold mb-4">Shopping Cart</h1>

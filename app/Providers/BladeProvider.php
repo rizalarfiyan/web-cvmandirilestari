@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\View\Components\Card\Category;
+use App\View\Components\Card\Product;
 use App\View\Components\EmptyState;
 use App\View\Components\HeadingTitle;
 use Illuminate\Support\Facades\Blade;
@@ -23,8 +24,9 @@ class BladeProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Blade::component('card-category', Category::class);
         Blade::component('heading-title', HeadingTitle::class);
         Blade::component('empty-state', EmptyState::class);
+        Blade::component('card-category', Category::class);
+        Blade::component('card-product', Product::class);
     }
 }
