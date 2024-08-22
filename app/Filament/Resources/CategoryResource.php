@@ -75,7 +75,7 @@ class CategoryResource extends Resource
                             ->imageResizeMode('cover')
                             ->imageCropAspectRatio('1:1')
                             ->panelLayout('grid')
-                            ->minSize(32)
+                            ->minSize(20)
                             ->maxSize(1024 * 3),
                     ])->columnSpanFull(),
             ]);

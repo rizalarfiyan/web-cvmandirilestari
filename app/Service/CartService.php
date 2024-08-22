@@ -37,6 +37,22 @@ class CartService
         return count($cartItems);
     }
 
+    static function getQuantity($productId): int
+    {
+        $cartItems = self::getCartItemFromCookie();
+        $existingItem = null;
+        foreach ($cartItems as $key => $item) {
+            if ($item->product_id == $productId) {
+                $existingItem = $key;
+                break;
+            }
+        }
+        if ($existingItem !== null) {
+            return $cartItems[$existingItem]->quantity;
+        }
+        return 0;
+    }
+
     static function removeCartItem($productId): array
     {
         $cartItems = self::getCartItemFromCookie();

@@ -78,7 +78,7 @@ class ProductResource extends Resource
                                 ->reorderable()
                                 ->panelLayout('grid')
                                 ->columnSpanFull()
-                                ->minSize(32)
+                                ->minSize(20)
                                 ->maxSize(1024 * 3)
                                 ->minFiles(1)
                                 ->maxFiles(5),
@@ -86,12 +86,6 @@ class ProductResource extends Resource
                 ])->columnSpan(2),
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make()->schema([
-                        Quantity::make('stock')
-                            ->required()
-                            ->numeric()
-                            ->default(0)
-                            ->minValue(0)
-                            ->maxValue(Constant::MAX_PRODUCT),
                         Forms\Components\TextInput::make('price')
                             ->required()
                             ->numeric()
