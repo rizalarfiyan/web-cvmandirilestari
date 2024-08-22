@@ -3,7 +3,6 @@ export default {
   content: [
     "./resources/**/*.blade.php",
     "./resources/**/*.js",
-    "node_modules/preline/dist/*.js",
   ],
   darkMode: "classes",
   theme: {
@@ -32,6 +31,7 @@ export default {
     },
   },
   plugins: [
-      require('@tailwindcss/typography'),
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/forms'),
   ],
 }

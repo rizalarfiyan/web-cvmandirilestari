@@ -4,8 +4,10 @@ namespace App\Livewire;
 
 use App\Constant;
 use App\Models\Category;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Title("Detail Kategori")]
 class DetailCategoryPage extends Component
 {
     protected string $slug;

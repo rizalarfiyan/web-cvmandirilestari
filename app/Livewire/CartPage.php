@@ -7,7 +7,7 @@ use App\Service\CartService;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Title("Cart")]
+#[Title("Keranjang")]
 class CartPage extends Component
 {
     public array $cartItems = [];
