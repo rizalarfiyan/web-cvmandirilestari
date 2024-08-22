@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Constant;
 use App\Models\Category;
-use App\Models\Product;
 use Livewire\Component;
 
 class DetailCategoryPage extends Component
@@ -18,9 +18,10 @@ class DetailCategoryPage extends Component
     public function render()
     {
         $category = Category::where('slug', $this->slug)->firstOrFail();
+        $products = $category->products()->cursorPaginate(Constant::LIMIT_PAGINATION_PRODUCT, ['products.id', 'products.name', 'products.slug', 'products.images', 'products.price']);
         return view('livewire.detail-category-page', [
             'category' => $category,
-            'products' => $category->products->select(['id', 'name', 'slug', 'price', 'images'])->toArray(),
+            'products' => $products,
         ]);
     }
 }
