@@ -1,7 +1,6 @@
 <main class="w-full min-h-[calc(100dvh_-_228px)]">
   <section class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
     <div class="container mx-auto px-4">
-      <h1 class="text-2xl font-semibold mb-4">Shopping Cart</h1>
       <div class="flex flex-col md:flex-row gap-4">
         <div class="md:w-3/4">
           <div class="bg-white overflow-x-auto rounded-lg shadow-md p-6 mb-4">
@@ -16,7 +15,6 @@
               </tr>
               </thead>
               <tbody>
-
               @forelse($cartItems as $item)
                 <tr wire:key="{{ $item->product_id }}">
                   <td class="py-4">
@@ -28,14 +26,14 @@
                   <td class="py-4">{{ Number::currency($item->unit_price, 'IDR', 'id') }}</td>
                   <td class="py-4">
                     <div class="flex items-center">
-                      <button wire:click.prevent="decrementItem({{ $item->product_id }})" class="border rounded-md py-2 px-4 mr-2">-</button>
+                      <button wire:click.prevent="decrement({{ $item->product_id }})" class="border rounded-md py-2 px-4 mr-2">-</button>
                       <span class="text-center w-8">{{ $item->quantity }}</span>
-                      <button wire:click.prevent="incrementItem({{ $item->product_id }})" class="border rounded-md py-2 px-4 ml-2">+</button>
+                      <button wire:click.prevent="increment({{ $item->product_id }})" class="border rounded-md py-2 px-4 ml-2">+</button>
                     </div>
                   </td>
                   <td class="py-4">{{ Number::currency($item->total_price, 'IDR', 'id') }}</td>
                   <td>
-                    <button wire:click.prevent="removeItem({{ $item->product_id }})" class="bg-slate-300 border-2 border-slate-400 rounded-lg px-3 py-1 hover:bg-red-500 hover:text-white hover:border-red-700">
+                    <button wire:click.prevent="remove({{ $item->product_id }})" class="bg-slate-300 border-2 border-slate-400 rounded-lg px-3 py-1 hover:bg-red-500 hover:text-white hover:border-red-700">
                       Remove
                     </button>
                   </td>
@@ -57,11 +55,7 @@
               <span>{{ Number::currency($totalPrice, 'IDR', 'id') }}</span>
             </div>
             <div class="flex justify-between mb-2">
-              <span>Taxes</span>
-              <span>{{ Number::currency(0, 'IDR', 'id') }}</span>
-            </div>
-            <div class="flex justify-between mb-2">
-              <span>Shipping</span>
+              <span>PPN</span>
               <span>{{ Number::currency(0, 'IDR', 'id') }}</span>
             </div>
             <hr class="my-2">

@@ -109,7 +109,7 @@ class ProductPage extends Component
         ];
 
         return view('livewire.product-page', [
-            'products' => $products->cursorPaginate(Constant::LIMIT_PAGINATION_PRODUCT, ['id', 'name', 'slug', 'images', 'price', 'is_featured', 'on_sale']),
+            'products' => $products->cursorPaginate(Constant::LIMIT_PAGINATION_PRODUCT, ['id', 'name', 'slug', 'images', 'price', 'is_featured', 'on_sale', 'in_stock']),
             'groupCategories' => $groupCategories,
             'statusFilters' => $statusFilters,
             'sortOrders' => $sortOrders,

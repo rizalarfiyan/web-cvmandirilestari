@@ -20,7 +20,7 @@ class DetailCategoryPage extends Component
 
     public function render()
     {
-        $products = $this->category->products()->paginate(Constant::LIMIT_PAGINATION_PRODUCT, ['products.id', 'products.name', 'products.slug', 'products.images', 'products.price']);
+        $products = $this->category->products()->paginate(Constant::LIMIT_PAGINATION_PRODUCT, ['products.id', 'products.name', 'products.slug', 'products.images', 'products.price', 'products.is_featured', 'products.on_sale', 'products.in_stock']);
         return view('livewire.detail-category-page', [
             'products' => $products,
         ])->title("Kategori {$this->category->name}");

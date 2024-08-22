@@ -19,6 +19,6 @@ class Constant
     public const CART_PAYMENT_METHOD_CASH = 'cash';
     public const CART_PAYMENT_METHOD_TRANSFER = 'transfer';
 
-    public const MAX_PRODUCT = 99;
+    public const MAX_PRODUCT = 9;
     public const LIMIT_PAGINATION_PRODUCT = 8;
 }
