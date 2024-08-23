@@ -101,7 +101,7 @@ class ProductPage extends Component
         }
 
         if ($this->sortOrder === 'latest-desc') {
-            $products->orderBy('id', 'desc');
+            $products->orderBy('id');
         } elseif ($this->sortOrder === 'price-asc') {
             $products->orderBy('price');
         } elseif ($this->sortOrder === 'price-desc') {
@@ -111,7 +111,7 @@ class ProductPage extends Component
         } elseif ($this->sortOrder === 'name-desc') {
             $products->orderBy('name', 'desc');
         } else {
-            $products->orderBy('id');
+            $products->orderBy('id', 'desc');
         }
 
         $products = $products->simplePaginate(Constant::LIMIT_PAGINATION_PRODUCT, ['id', 'name', 'slug', 'images', 'price', 'is_featured', 'on_sale', 'in_stock']);

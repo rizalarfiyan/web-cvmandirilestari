@@ -36,7 +36,7 @@
       this.autoplay()
     },
 }" x-init="autoplay" class="relative w-full overflow-hidden">
-            <div class="relative w-full h-auto object-cover aspect-[4/3] rounded-md overflow-hidden mb-2">
+            <div class="relative w-full h-auto object-cover border border-slate-200 aspect-[4/3] rounded-md overflow-hidden mb-2">
               <template x-for="(slide, index) in slides">
                 <div x-cloak x-show="currentSlideIndex == index + 1" class="absolute inset-0" x-transition.opacity.duration.1000ms>
                   <img class="absolute w-full h-full inset-0 object-cover text-neutral-600 dark:text-neutral-300" x-bind:src="slide" alt="{{ $product->name }}"/>
@@ -58,7 +58,7 @@
 
             <div class="flex items-center justify-center gap-2" role="group" aria-label="slides">
               <template x-for="(slide, index) in slides">
-                <img class="w-full h-auto object-cover aspect-[4/3] max-w-20 border-4 rounded-lg" x-on:click="(currentSlideIndex = index + 1), setAutoplayInterval(autoplayIntervalTime)" x-bind:class="[currentSlideIndex === index + 1 ? 'border-primary-500 cursor-default' : 'border-slate-100 cursor-pointer']" x-bind:aria-label="'slide ' + (index + 1)""
+                <img class="w-full h-auto object-cover aspect-[4/3] max-w-20 border-2 rounded-lg" x-on:click="(currentSlideIndex = index + 1), setAutoplayInterval(autoplayIntervalTime)" x-bind:class="[currentSlideIndex === index + 1 ? 'border-primary-500 cursor-default' : 'border-slate-200 cursor-pointer']" x-bind:aria-label="'slide ' + (index + 1)""
                 x-bind:src="slide" alt="{{ $product->name }}" />
               </template>
             </div>
@@ -131,13 +131,15 @@
           <hr class="my-6 md:my-8 border-slate-200 dark:border-slate-800"/>
           <div>
             @if(!empty($categories) && count($categories) > 0)
-              <div class="flex items-center justify-start gap-3">
+              <div class="flex flex-row items-center gap-3">
                 <h4 class="text-lg font-semibold text-slate-900 dark:text-white">Kategori:</h4>
-                @foreach($categories as $category)
-                  <a wire:key="{{ $category['id'] }}" href="/categories/{{ $category['slug'] }}" class="bg-slate-200 text-slate-800 text-sm font-medium px-4 py-1 rounded dark:bg-gray-700 dark:text-slate-400 border border-slate-400 transition-colors duration-300 hover:bg-slate-300">
-                    {{ $category['name'] }}
-                  </a>
-                @endforeach
+                <div class="flex items-center justify-start flex-wrap gap-3">
+                  @foreach($categories as $category)
+                    <a wire:key="{{ $category['id'] }}" href="/categories/{{ $category['slug'] }}" class="bg-slate-200 text-slate-800 text-sm font-medium px-4 py-1 rounded dark:bg-gray-700 dark:text-slate-400 border border-slate-400 transition-colors duration-300 hover:bg-slate-300">
+                      {{ $category['name'] }}
+                    </a>
+                  @endforeach
+                </div>
               </div>
             @endif
           </div>
