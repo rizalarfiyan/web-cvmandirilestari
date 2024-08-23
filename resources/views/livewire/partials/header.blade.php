@@ -25,10 +25,12 @@
         <div class="overflow-hidden overflow-y-auto max-h-[75vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-100 [&::-webkit-scrollbar-thumb]:bg-slate-300 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500">
           <div class="flex flex-col gap-x-0 mt-5 divide-y divide-dashed divide-slate-200 md:flex-row md:items-center md:justify-end md:gap-x-7 md:mt-0 md:ps-7 md:divide-y-0 md:divide-solid dark:divide-slate-700">
 
-            <a wire:navigate class="font-medium py-3 md:py-6 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600 {{ request()->is('/') ? 'text-primary-600 dark:text-primary-500' : 'text-slate-500 hover:text-slate-400 dark:text-slate-400 dark:hover:text-slate-500' }}" href="/" aria-current="page">Beranda</a>
+            <a wire:navigate class="font-medium py-3 md:py-6 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600 {{ request()->is('/') ? 'text-primary-600 dark:text-primary-500' : 'text-slate-500 hover:text-slate-400 dark:text-slate-400 dark:hover:text-slate-500' }}" href="/">Beranda</a>
             <a wire:navigate class="font-medium py-3 md:py-6 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600 {{ str_starts_with(request()->path(), 'categories') ? 'text-primary-600 dark:text-primary-500' : 'text-slate-500 hover:text-slate-400 dark:text-slate-400 dark:hover:text-slate-500' }}" href="/categories">Kategori</a>
             <a wire:navigate class="font-medium py-3 md:py-6 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600 {{ str_starts_with(request()->path(), 'products') ? 'text-primary-600 dark:text-primary-500' : 'text-slate-500 hover:text-slate-400 dark:text-slate-400 dark:hover:text-slate-500' }}" href="/products">Produk</a>
-
+            @can('customer')
+              <a wire:navigate class="font-medium py-3 md:py-6 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600 {{ request()->is('history') ? 'text-primary-600 dark:text-primary-500' : 'text-slate-500 hover:text-slate-400 dark:text-slate-400 dark:hover:text-slate-500' }}" href="/history">Riwayat</a>
+            @endcan
             <a wire:navigate class="transition-colors duration-300 font-medium flex items-center py-3 md:py-6 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600 {{ request()->is('cart') ? 'text-primary-600 dark:text-primary-500' : 'text-slate-500 hover:text-slate-400 dark:text-slate-400 dark:hover:text-slate-500' }}" href="/cart">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 w-5 h-5 mr-1">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/>
@@ -44,36 +46,16 @@
 
       <div class="pt-3 pl-5 md:pt-0 flex">
         @if(Auth::check())
-          <div x-data="{ isOpen: false, openedWithKeyboard: false }" class="relative shrink-0" @keydown.esc.window="isOpen = false, openedWithKeyboard = false">
-            <button aria-label="User menu" type="button" class="shrink-0" @click="isOpen = ! isOpen" aria-haspopup="true" @keydown.space.prevent="openedWithKeyboard = true" @keydown.enter.prevent="openedWithKeyboard = true" @keydown.down.prevent="openedWithKeyboard = true" :aria-expanded="isOpen || openedWithKeyboard">
-              <img class="object-cover object-center fi-circular rounded-full h-8 w-8 fi-user-avatar" src="https://ui-avatars.com/api/?name=A&amp;color=FFFFFF&amp;background=09090b" alt="Avatar of Admin">
-            </button>
-            @php
-              $urls = [
-                  'Keluar' => 'logout',
-              ];
-              if (auth()->user()->can('admin')) {
-                $urls = [
-                  'Dashboard' => 'dashboard',
-                  ...$urls
-                ];
-              }
-
-              if (auth()->user()->can('customer')) {
-                $urls = [
-                  'Histori' => 'history',
-                  ...$urls
-                ];
-              }
-            @endphp
-            <div x-cloak x-show="isOpen || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" @click.outside="isOpen = false, openedWithKeyboard = false" @keydown.down.prevent="$focus.wrap().next()" @keydown.up.prevent="$focus.wrap().previous()" class="absolute top-11 left-0 flex w-full min-w-[12rem] flex-col overflow-hidden rounded-md border border-slate-300 bg-slate-50 py-1.5 dark:border-slate-700 dark:bg-slate-900" role="menu">
-              @foreach($urls as $name => $url)
-                <a href="{{ $url }}" class="bg-slate-50 px-4 py-2 text-sm text-slate-600 hover:bg-slate-900/5 hover:text-slate-900 focus-visible:bg-slate-900/10 focus-visible:text-slate-900 focus-visible:outline-none dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-50/5 dark:hover:text-white dark:focus-visible:bg-slate-50/10 dark:focus-visible:text-white" role="menuitem">
-                  {{ $name }}
-                </a>
-              @endforeach
-            </div>
-          </div>
+          @can('admin')
+            <a href="/dashboard" class="transition-colors duration-300 py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600">
+              Dashboard
+            </a>
+          @endcan
+          @can('customer')
+            <a href="/logout" class="transition-colors duration-300 py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600">
+              Logout
+            </a>
+          @endcan
         @else
           <a href="/login" class="transition-colors duration-300 py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600">
             <svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
