@@ -16,9 +16,5 @@ Route::prefix('products')->name('product.')->group(function () {
 });
 
 Route::get('/cart', App\Livewire\CartPage::class)->name('cart');
-
+Route::get('/history', App\Livewire\HistoryPage::class)->name('history');
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
-
-Route::get('/test', function () {
-    return redirect()->to('/dashboard');
-});

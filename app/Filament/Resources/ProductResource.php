@@ -2,10 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Constant;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
-use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -17,7 +15,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Support\Colors\Color;
 use Filament\Forms\Set;
 use Illuminate\Support\Str;
-use LaraZeus\Quantity\Components\Quantity;
 
 class ProductResource extends Resource
 {
@@ -125,9 +122,6 @@ class ProductResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('stock')
-                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
                     ->money('IDR', 0, 'id')

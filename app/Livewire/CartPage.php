@@ -12,8 +12,6 @@ class CartPage extends Component
 {
     use WithAddToCart;
 
-//    public array $cartItems = [];
-
     public int $totalPrice = 0;
 
     public function mount()

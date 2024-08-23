@@ -18,16 +18,16 @@ class ProductPage extends Component
     use WithPagination, WithAddToCart;
 
     #[Url]
-    public $category = [];
+    public array $category = [];
 
     #[Url]
-    public $isFeatured = false;
+    public bool $isFeatured = false;
 
     #[Url]
-    public $onSale = false;
+    public bool $onSale = false;
 
     #[Url]
-    public $sortOrder = "latest-asc";
+    public string $sortOrder = "latest-asc";
 
     public array $groupCategories;
 

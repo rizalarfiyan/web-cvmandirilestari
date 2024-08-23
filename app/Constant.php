@@ -21,4 +21,5 @@ class Constant
 
     public const MAX_PRODUCT = 9;
     public const LIMIT_PAGINATION_PRODUCT = 8;
+    public const LIMIT_PAGINATION_CART = 10;
 }

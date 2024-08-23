@@ -63,6 +63,6 @@ class CheckoutForm extends Component
 
         $this->reset();
         $this->dispatch('close-modal');
-        $this->redirect('/');
+        $this->redirect(route('history'));
     }
 }
