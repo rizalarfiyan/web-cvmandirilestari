@@ -13,16 +13,19 @@ class DetailCategoryPage extends Component
 
     public Category $category;
 
+    public bool $hasMore = false;
+
     public function mount($slug)
     {
         $this->category = Category::where('slug', $slug)->firstOrFail();
+        self::initCart();
+        $this->products = $this->category->products()->simplePaginate(Constant::LIMIT_PAGINATION_PRODUCT, ['products.id', 'products.name', 'products.slug', 'products.images', 'products.price', 'products.is_featured', 'products.on_sale', 'products.in_stock']);
+        $this->hasMore = $this->products->hasMorePages();
     }
 
     public function render()
     {
-        $products = $this->category->products()->paginate(Constant::LIMIT_PAGINATION_PRODUCT, ['products.id', 'products.name', 'products.slug', 'products.images', 'products.price', 'products.is_featured', 'products.on_sale', 'products.in_stock']);
-        return view('livewire.detail-category-page', [
-            'products' => $products,
-        ])->title("Kategori {$this->category->name}");
+        self::updateStateProduct();
+        return view('livewire.detail-category-page')->title("Kategori {$this->category->name}");
     }
 }

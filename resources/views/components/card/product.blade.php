@@ -34,14 +34,32 @@
       </p>
     </div>
     @if($product->in_stock)
-      <button type="button" wire:click.prevent="addToCart({{ $product->id }})" class="p-2 text-sm flex items-center justify-center font-medium text-slate-900 focus:outline-none bg-white rounded-lg border border-slate-200 hover:bg-slate-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-slate-100 dark:focus:ring-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-600 dark:hover:text-white dark:hover:bg-slate-700 transition-colors duration-300">
-        <svg wire:loading.remove wire:target="addToCart({{ $product->id }})" class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"/>
-        </svg>
-        <span wire:loading wire:target="addToCart({{ $product->id }})" class="animate-spin inline-block size-5 border-2 border-current border-t-transparent text-primary-600 rounded-full" role="status" aria-label="loading">
-        <span class="sr-only">Loading...</span>
-      </span>
-      </button>
+      @if(($product->quantity ?? 0) > 0)
+        <div class="relative flex items-center flex-row mx-auto">
+          <input type="text" value="{{ $product->quantity ?? 0 }}" class="border-transparent text-right text-slate-900 font-semibold block w-full dark:text-white" disabled/>
+          <div class="max-w-[38px] flex items-center justify-center flex-col gap-1">
+            <button wire:loading.attr="disabled" {{ ($product->quantity ?? 0) === \App\Constant::MAX_PRODUCT ? 'disabled' : '' }}  wire:click.prevent="incrementProduct({{ $product->id }})" type="button" class="bg-slate-100 dark:bg-slate-700 dark:hover:bg-slate-600 dark:border-slate-600 hover:bg-slate-200 border border-slate-300 rounded-lg py-2 px-2 focus:ring-slate-100 dark:focus:ring-slate-700 focus:ring-2 focus:outline-none">
+              <svg class="size-2 text-slate-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+              </svg>
+            </button>
+            <button wire:loading.attr="disabled" wire:click.prevent="decrementProduct({{ $product->id }})" type="button" class="bg-slate-100 dark:bg-slate-700 dark:hover:bg-slate-600 dark:border-slate-600 hover:bg-slate-200 border border-slate-300 rounded-lg py-2 px-2 focus:ring-slate-100 dark:focus:ring-slate-700 focus:ring-2 focus:outline-none">
+              <svg class="size-2 text-slate-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      @else
+        <button type="button" wire:click.prevent="incrementProduct({{ $product->id }})" class="p-2 text-sm flex items-center justify-center font-medium text-slate-900 focus:outline-none bg-white rounded-lg border border-slate-200 hover:bg-slate-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-slate-100 dark:focus:ring-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-600 dark:hover:text-white dark:hover:bg-slate-700 transition-colors duration-300">
+          <svg wire:loading.remove wire:target="incrementProduct({{ $product->id }})" class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"/>
+          </svg>
+          <span wire:loading wire:target="incrementProduct({{ $product->id }})" class="animate-spin inline-block size-5 border-2 border-current border-t-transparent text-primary-600 rounded-full" role="status" aria-label="loading">
+              <span class="sr-only">Loading...</span>
+            </span>
+        </button>
+      @endif
     @endif
   </div>
 </div>

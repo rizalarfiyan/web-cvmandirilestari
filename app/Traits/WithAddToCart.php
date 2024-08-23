@@ -4,9 +4,38 @@ namespace App\Traits;
 
 use App\Livewire\Partials\Header;
 use App\Service\CartService;
+use Illuminate\Support\Collection;
 
 trait WithAddToCart
 {
+    protected Collection $cartItems;
+
+    public $products;
+
+    protected function initCart(): void
+    {
+        $cartItems = CartService::getCartItemFromCookie();
+        $this->cartItems = self::groupByProductId($cartItems);
+    }
+
+    protected function initCartPage(): void
+    {
+        $this->cartItems = collect(CartService::getCartItemFromCookie());
+    }
+
+    protected function groupByProductId($cartItems): Collection
+    {
+        return collect($cartItems)->keyBy('product_id');
+    }
+
+    protected function updateStateProduct(): void
+    {
+        $this->products = $this->products->map(function ($product) {
+            $product->quantity = collect($this->cartItems ?? [])->get($product->id, ['quantity' => 0])->quantity ?? 0;
+            return (object) $product;
+        });
+    }
+
     public function addToCart($productId): void
     {
         $totalCount = CartService::addItemToCart($productId);
@@ -28,7 +57,7 @@ trait WithAddToCart
             'quantity' => $quantity,
             'cartItems' => $cartItems,
             'totalCart' => count($cartItems),
-            'totalPrice' => CartService::calculateTotalPrice($cartItems),
+            'totalPrice' => CartService::calculateTotalPrice(collect($cartItems)),
         ];
     }
 
@@ -42,17 +71,19 @@ trait WithAddToCart
             'quantity' => $quantity,
             'cartItems' => $cartItems,
             'totalCart' => count($cartItems),
-            'totalPrice' => CartService::calculateTotalPrice($cartItems),
+            'totalPrice' => CartService::calculateTotalPrice(collect($cartItems)),
         ];
     }
 
     public function incrementProduct(int $productId): void
     {
-        $this->baseIncrementProduct($productId);
+        $val = $this->baseIncrementProduct($productId);
+        $this->cartItems = self::groupByProductId($val->cartItems);
     }
 
     public function decrementProduct(int $productId): void
     {
-        $this->baseDecrementProduct($productId);
+        $val = $this->baseDecrementProduct($productId);
+        $this->cartItems = self::groupByProductId($val->cartItems);
     }
 }

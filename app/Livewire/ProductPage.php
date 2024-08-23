@@ -29,13 +29,61 @@ class ProductPage extends Component
     #[Url]
     public $sortOrder = "latest-asc";
 
+    public array $groupCategories;
+
+    public array $statusFilters = [
+        [
+            'id' => 'status-filter-featured',
+            'name' => 'Produk Unggulan',
+            'description' => 'Produk yang sedang populer dan banyak diminati',
+            'model' => 'isFeatured',
+        ],
+        [
+            'id' => 'status-fitler-on-sale',
+            'name' => 'Produk Diskon',
+            'description' => 'Produ produk yang sedang diskon',
+            'model' => 'onSale',
+        ]
+    ];
+
+    public array $sortOrders = [
+        [
+            'id' => 'latest-asc',
+            'name' => 'Produk Terbaru',
+        ],
+        [
+            'id' => 'latest-desc',
+            'name' => 'Produk Terlama',
+        ],
+        [
+            'id' => 'name-asc',
+            'name' => 'Nama A-Z',
+        ],
+        [
+            'id' => 'name-desc',
+            'name' => 'Nama Z-A',
+        ],
+        [
+            'id' => 'price-asc',
+            'name' => 'Harga Terendah',
+        ],
+        [
+            'id' => 'price-desc',
+            'name' => 'Harga Tertinggi',
+        ],
+    ];
+
+    public function mount()
+    {
+        self::initCart();
+        $categories = Category::all()->select(['id', 'name', 'slug'])->sortBy('name');
+        $this->groupCategories = $categories->groupBy(function (array $item) {
+            return Str::upper(Str::substr($item['name'], 0, 1));
+        })->toArray();
+    }
+
     public function render()
     {
-        $categories = Category::all()->select(['id', 'name', 'slug'])->sortBy('name');
-        $groupCategories = $categories->groupBy(function (array $item) {
-            return Str::upper(Str::substr($item['name'], 0, 1));
-        });
-
         $products = Product::query();
 
         if (!empty($this->category)) {
@@ -66,53 +114,12 @@ class ProductPage extends Component
             $products->orderBy('id');
         }
 
-        $statusFilters = [
-            [
-                'id' => 'status-filter-featured',
-                'name' => 'Produk Unggulan',
-                'description' => 'Produk yang sedang populer dan banyak diminati',
-                'model' => 'isFeatured',
-            ],
-            [
-                'id' => 'status-fitler-on-sale',
-                'name' => 'Produk Diskon',
-                'description' => 'Produ produk yang sedang diskon',
-                'model' => 'onSale',
-            ]
-        ];
-
-        $sortOrders = [
-            [
-                'id' => 'latest-asc',
-                'name' => 'Produk Terbaru',
-            ],
-            [
-                'id' => 'latest-desc',
-                'name' => 'Produk Terlama',
-            ],
-            [
-                'id' => 'name-asc',
-                'name' => 'Nama A-Z',
-            ],
-            [
-                'id' => 'name-desc',
-                'name' => 'Nama Z-A',
-            ],
-            [
-                'id' => 'price-asc',
-                'name' => 'Harga Terendah',
-            ],
-            [
-                'id' => 'price-desc',
-                'name' => 'Harga Tertinggi',
-            ],
-        ];
+        $products = $products->simplePaginate(Constant::LIMIT_PAGINATION_PRODUCT, ['id', 'name', 'slug', 'images', 'price', 'is_featured', 'on_sale', 'in_stock']);
+        $this->products = $products;
+        self::updateStateProduct();
 
         return view('livewire.product-page', [
-            'products' => $products->cursorPaginate(Constant::LIMIT_PAGINATION_PRODUCT, ['id', 'name', 'slug', 'images', 'price', 'is_featured', 'on_sale', 'in_stock']),
-            'groupCategories' => $groupCategories,
-            'statusFilters' => $statusFilters,
-            'sortOrders' => $sortOrders,
+            'links' => $products->links(),
         ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Constant;
 use App\Models\Product;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 
@@ -130,8 +131,8 @@ class CartService
         return [$isEmpty ? 0 : $cartItems[$existingItem]->quantity, $cartItems];
     }
 
-    static function calculateTotalPrice($cartItems)
+    static function calculateTotalPrice(Collection $cartItems): float
     {
-        return array_sum(array_column($cartItems, 'total_price'));
+        return $cartItems->sum('total_price');
     }
 }

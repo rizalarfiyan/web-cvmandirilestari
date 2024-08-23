@@ -12,19 +12,19 @@ class CartPage extends Component
 {
     use WithAddToCart;
 
-    public array $cartItems = [];
+//    public array $cartItems = [];
 
     public int $totalPrice = 0;
 
     public function mount()
     {
-        $this->cartItems = CartService::getCartItemFromCookie();
+        self::initCartPage();
         $this->totalPrice = CartService::calculateTotalPrice($this->cartItems);
     }
 
     public function remove($productId): void
     {
-        $this->cartItems = CartService::removeCartItem($productId);
+        $this->cartItems = collect(CartService::removeCartItem($productId));
         $this->totalPrice = CartService::calculateTotalPrice($this->cartItems);
         self::updateCartCount(count($this->cartItems));
     }
@@ -32,19 +32,21 @@ class CartPage extends Component
     public function increment(int $productId): void
     {
         $val = self::baseIncrementProduct($productId);
-        $this->cartItems = $val->cartItems;
+        $this->cartItems = collect($val->cartItems);
         $this->totalPrice = $val->totalPrice;
     }
 
     public function decrement(int $productId): void
     {
         $val = self::baseDecrementProduct($productId);
-        $this->cartItems = $val->cartItems;
+        $this->cartItems = collect($val->cartItems);
         $this->totalPrice = $val->totalPrice;
     }
 
     public function render()
     {
-        return view('livewire.cart-page');
+        return view('livewire.cart-page', [
+            'cartItems' => $this->cartItems,
+        ]);
     }
 }

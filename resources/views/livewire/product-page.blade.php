@@ -114,7 +114,7 @@
             @endforeach
           </div>
           <div class="max-w-48 mx-auto">
-            {{ $products->links() }}
+            {!! $links !!}
           </div>
         @else
           <x-empty-state message="Belum ada produk yang tersedia."/>
