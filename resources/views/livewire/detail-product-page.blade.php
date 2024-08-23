@@ -130,7 +130,7 @@
           @endif
           <hr class="my-6 md:my-8 border-slate-200 dark:border-slate-800"/>
           <div>
-            @if(!empty($relatedProducts) && count($relatedProducts) > 0)
+            @if(!empty($categories) && count($categories) > 0)
               <div class="flex items-center justify-start gap-3">
                 <h4 class="text-lg font-semibold text-slate-900 dark:text-white">Kategori:</h4>
                 @foreach($categories as $category)
@@ -150,13 +150,13 @@
     </div>
   </section>
 
-  @if(!empty($relatedProducts) && count($relatedProducts) > 0)
+  @if(!empty($products) && count($products) > 0)
     <section class="container">
       <div class="max-w-[85rem] px-4 pt-10 sm:px-6 lg:px-8 pb-28 mx-auto">
         <x-heading-title title="Rekomendasi Produk" description="Mungkin anda tertarik dengan produk ini."/>
         <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
           <div class="mb-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            @foreach($relatedProducts as $product)
+            @foreach($products as $product)
               <x-card-product wire:key="{{ $product->id }}" :product="$product"/>
             @endforeach
           </div>
