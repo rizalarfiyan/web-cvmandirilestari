@@ -46,7 +46,7 @@ class CartPage extends Component
     public function render()
     {
         return view('livewire.cart-page', [
-            'cartItems' => $this->cartItems,
+            'carts' => $this->cartItems,
         ]);
     }
 }

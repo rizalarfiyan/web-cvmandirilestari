@@ -6,7 +6,6 @@ use App\Constant;
 use App\Models\Product;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Log;
 
 class CartService
 {
@@ -22,13 +21,14 @@ class CartService
 
     static protected function addNewItem($productId): array
     {
-        $product = Product::where('id', $productId)->select(['id', 'name', 'price', 'images', 'in_stock'])->first();
+        $product = Product::where('id', $productId)->select(['id', 'name', 'slug', 'price', 'images', 'in_stock'])->first();
         if (!$product || !$product->in_stock) {
             return [];
         }
         $cartItems[] = (object)[
             'product_id' => $productId,
             'name' => $product->name,
+            'slug' => $product->slug,
             'image' => $product->images[0],
             'quantity' => 1,
             'unit_price' => (float)$product->price,

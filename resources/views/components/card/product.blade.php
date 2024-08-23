@@ -2,7 +2,7 @@
 
 <div wire:key="{{ $product->id }}" class="group rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800 shadow-sm">
   <div class="relative h-56 w-full overflow-hidden rounded-md">
-    <a href="/products/{{ $product->slug }}" class="bg-slate-200 block">
+    <a wire:navigate href="/products/{{ $product->slug }}" class="bg-slate-200 block">
       @if(count($product->images) > 0)
         <img src="{{ asset('/storage/'.$product->images[0]) }}" alt="" class="object-cover w-full h-56 mx-auto group-hover:scale-110 transition-transform duration-300">
       @endif
@@ -26,7 +26,7 @@
   </div>
   <div class="pt-3 flex items-center justify-center gap-4">
     <div class="w-full">
-      <a href="/products/{{ $product->slug }}" class="text-lg font-semibold leading-tight text-slate-900 dark:text-white line-clamp-2">
+      <a wire:navigate href="/products/{{ $product->slug }}" class="text-lg font-semibold leading-tight text-slate-900 dark:text-white line-clamp-2">
         {{ $product->name }}
       </a>
       <p class="text-2xl font-extrabold leading-tight text-slate-900 dark:text-white mt-1">
