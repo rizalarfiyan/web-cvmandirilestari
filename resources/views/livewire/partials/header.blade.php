@@ -50,7 +50,7 @@
             </button>
             @php
               $urls = [
-                  'Logout' => 'logout',
+                  'Keluar' => 'logout',
               ];
               if (auth()->user()->can('admin')) {
                 $urls = [
@@ -61,7 +61,7 @@
 
               if (auth()->user()->can('customer')) {
                 $urls = [
-                  'Cart' => 'cart',
+                  'Histori' => 'history',
                   ...$urls
                 ];
               }
