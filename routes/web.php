@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LogoutController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', App\Livewire\HomePage::class)->name('home');
@@ -15,3 +16,9 @@ Route::prefix('products')->name('product.')->group(function () {
 });
 
 Route::get('/cart', App\Livewire\CartPage::class)->name('cart');
+
+Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
+
+Route::get('/test', function () {
+    return redirect()->to('/dashboard');
+});

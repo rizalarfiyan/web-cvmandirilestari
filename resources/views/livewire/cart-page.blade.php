@@ -108,9 +108,17 @@
           </div>
           @if(!empty($carts) && count($carts) > 0)
             <div class="space-y-3">
-              <button type="button" class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+              <button type="button" class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-colors duration-300 disabled:cursor-not-allowed" {{ !(auth()->check() && auth()->user()->can('customer')) ? "disabled" : "" }}>
                 Bayar
               </button>
+              @if(!auth()->check())
+                <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                  <span>Jika anda ingin checkout, silahkan </span>
+                  <a wire:navigate href="/login" title="" class="font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
+                    Masuk atau Daftar
+                  </a>
+                </p>
+              @endif
             </div>
           @endif
         </div>

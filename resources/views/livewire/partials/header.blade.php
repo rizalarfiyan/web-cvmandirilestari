@@ -38,22 +38,52 @@
                 {{ $totalCount }}
               </span>
             </a>
-
-            <div class="pt-3 md:pt-0">
-              <a class="transition-colors duration-300 py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600" href="/login">
-                <svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
-                </svg>
-                Masuk
-              </a>
-            </div>
           </div>
         </div>
       </div>
 
-      {{-- TODO: Theme switcher here --}}
+      <div class="pt-3 pl-5 md:pt-0 flex">
+        @if(Auth::check())
+          <div x-data="{ isOpen: false, openedWithKeyboard: false }" class="relative shrink-0" @keydown.esc.window="isOpen = false, openedWithKeyboard = false">
+            <button aria-label="User menu" type="button" class="shrink-0" @click="isOpen = ! isOpen" aria-haspopup="true" @keydown.space.prevent="openedWithKeyboard = true" @keydown.enter.prevent="openedWithKeyboard = true" @keydown.down.prevent="openedWithKeyboard = true" :aria-expanded="isOpen || openedWithKeyboard">
+              <img class="object-cover object-center fi-circular rounded-full h-8 w-8 fi-user-avatar" src="https://ui-avatars.com/api/?name=A&amp;color=FFFFFF&amp;background=09090b" alt="Avatar of Admin">
+            </button>
+            @php
+              $urls = [
+                  'Logout' => 'logout',
+              ];
+              if (auth()->user()->can('admin')) {
+                $urls = [
+                  'Dashboard' => 'dashboard',
+                  ...$urls
+                ];
+              }
 
+              if (auth()->user()->can('customer')) {
+                $urls = [
+                  'Cart' => 'cart',
+                  ...$urls
+                ];
+              }
+            @endphp
+            <div x-cloak x-show="isOpen || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" @click.outside="isOpen = false, openedWithKeyboard = false" @keydown.down.prevent="$focus.wrap().next()" @keydown.up.prevent="$focus.wrap().previous()" class="absolute top-11 left-0 flex w-full min-w-[12rem] flex-col overflow-hidden rounded-md border border-slate-300 bg-slate-50 py-1.5 dark:border-slate-700 dark:bg-slate-900" role="menu">
+              @foreach($urls as $name => $url)
+                <a href="{{ $url }}" class="bg-slate-50 px-4 py-2 text-sm text-slate-600 hover:bg-slate-900/5 hover:text-slate-900 focus-visible:bg-slate-900/10 focus-visible:text-slate-900 focus-visible:outline-none dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-50/5 dark:hover:text-white dark:focus-visible:bg-slate-50/10 dark:focus-visible:text-white" role="menuitem">
+                  {{ $name }}
+                </a>
+              @endforeach
+            </div>
+          </div>
+        @else
+          <a href="/login" class="transition-colors duration-300 py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600">
+            <svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Masuk
+          </a>
+        @endif
+      </div>
     </div>
   </nav>
 </header>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Constant;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -35,5 +36,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function carts()
     {
         return $this->hasMany(Cart::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === Constant::ROLE_ADMIN;
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->role === Constant::ROLE_ADMIN;
     }
 }

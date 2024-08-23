@@ -20,36 +20,21 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AdminPanelProvider extends PanelProvider
+class AuthPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
-            ->id('dashboard')
-            ->path('dashboard')
-            ->login(fn() => redirect('/login'))
+            ->id('auth')
+            ->path('/')
+            ->login()
+            ->passwordReset()
+            ->emailVerification()
+            ->registration()
+            ->profile()
             ->colors([
                 'primary' => Color::Yellow,
-            ])
-            ->userMenuItems([
-                MenuItem::make()
-                    ->label('Home')
-                    ->icon('heroicon-o-home')
-                    ->url('/'),
-                MenuItem::make()
-                    ->label('Dashboard')
-                    ->icon('heroicon-o-squares-2x2')
-                    ->url('/dashboard'),
-            ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([
-                Pages\Dashboard::class,
-            ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([
-                CartOverview::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -64,7 +49,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-                AuthAdmin::class,
             ]);
     }
 }
