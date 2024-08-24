@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <div id="responsive-navbar" class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow md:block">
+      <div class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow md:block">
         <div class="overflow-hidden overflow-y-auto max-h-[75vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-slate-100 [&::-webkit-scrollbar-thumb]:bg-slate-300 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500">
           <div class="flex flex-col gap-x-0 mt-5 divide-y divide-dashed divide-slate-200 md:flex-row md:items-center md:justify-end md:gap-x-7 md:mt-0 md:ps-7 md:divide-y-0 md:divide-solid dark:divide-slate-700">
 
@@ -29,7 +29,7 @@
             <a wire:navigate class="font-medium py-3 md:py-6 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600 {{ str_starts_with(request()->path(), 'categories') ? 'text-primary-600 dark:text-primary-500' : 'text-slate-500 hover:text-slate-400 dark:text-slate-400 dark:hover:text-slate-500' }}" href="/categories">Kategori</a>
             <a wire:navigate class="font-medium py-3 md:py-6 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600 {{ str_starts_with(request()->path(), 'products') ? 'text-primary-600 dark:text-primary-500' : 'text-slate-500 hover:text-slate-400 dark:text-slate-400 dark:hover:text-slate-500' }}" href="/products">Produk</a>
             @can('customer')
-              <a wire:navigate class="font-medium py-3 md:py-6 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600 {{ request()->is('history') ? 'text-primary-600 dark:text-primary-500' : 'text-slate-500 hover:text-slate-400 dark:text-slate-400 dark:hover:text-slate-500' }}" href="/history">Riwayat</a>
+              <a wire:navigate class="font-medium py-3 md:py-6 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600 {{ str_starts_with(request()->path(), 'history') ? 'text-primary-600 dark:text-primary-500' : 'text-slate-500 hover:text-slate-400 dark:text-slate-400 dark:hover:text-slate-500' }}" href="/history">Riwayat</a>
             @endcan
             <a wire:navigate class="transition-colors duration-300 font-medium flex items-center py-3 md:py-6 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600 {{ request()->is('cart') ? 'text-primary-600 dark:text-primary-500' : 'text-slate-500 hover:text-slate-400 dark:text-slate-400 dark:hover:text-slate-500' }}" href="/cart">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 w-5 h-5 mr-1">

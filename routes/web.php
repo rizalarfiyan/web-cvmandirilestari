@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Middleware\AuthCustomer;
+use App\Http\Middleware\AuthCustomerWithAdmin;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', App\Livewire\HomePage::class)->name('home');
@@ -16,5 +18,8 @@ Route::prefix('products')->name('product.')->group(function () {
 });
 
 Route::get('/cart', App\Livewire\CartPage::class)->name('cart');
-Route::get('/history', App\Livewire\HistoryPage::class)->name('history');
+
+Route::middleware(AuthCustomer::class)->get('/history', App\Livewire\HistoryPage::class)->name('history.list');
+Route::middleware(AuthCustomerWithAdmin::class)->get('/history/{id}', App\Livewire\HistoryDetailPage::class)->name('history.detail');
+
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');

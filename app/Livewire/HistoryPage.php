@@ -116,6 +116,11 @@ class HistoryPage extends Component
         $cart->select(['id', 'total_price', 'payment_method', 'payment_state', 'state'])
             ->withCount('items as total_product');
 
+        $user = auth()->user();
+        if (!$user->can('admin')) {
+            $cart->where('user_id', $user->id);
+        }
+
         switch ($this->paymentMethod) {
             case Constant::CART_PAYMENT_METHOD_CASH:
             case Constant::CART_PAYMENT_METHOD_TRANSFER:
